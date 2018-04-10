@@ -107,11 +107,13 @@ host this yourself.
       xhr.open('GET', url, true);
       xhr.responseType = 'arraybuffer';
       xhr.send();
+
       xhr.onload = function(e) {
         if (xhr.status != 200) {
           onLoad();
           return;
         }
+        console.log(xhr.response);
         onLoad(xhr.response);
       };
       xhr.onerror = function(e) {
