@@ -82,12 +82,14 @@ host this yourself.
     function onLoad(arrayBuffer) {
       console.log("onLoad");
       if (!arrayBuffer) {
+        console.log("Array buffer is null");
         window.video.src = null;
         return;
       }
+      console.log("arraybuffer = " + arrayBuffer);
       window.allSegments = new Uint8Array(arrayBuffer);
       window.sourceBuffer.appendBuffer(window.allSegments);
-      processNextSegment();
+      //processNextSegment();
     }
     /**
      * Processes the next video segment for the video.
