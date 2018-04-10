@@ -51,6 +51,8 @@ host this yourself.
     // Turn on debugging so that you can see what is going on.  Please turn this off
     // on your production receivers to improve performance.
     cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
+    window.location.reload(true);
+
     // Start the receiver SDK.
     console.log('Application is ready, starting system');
     window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
@@ -61,6 +63,7 @@ host this yourself.
           window.close();
       }
     };
+
     window.castReceiverManager.start();
     // Use MSE with the media element.
     window.video = document.getElementById('vid');
@@ -109,7 +112,7 @@ host this yourself.
             window.video.play();
           }
       }
-      setTimeout(processNextSegment, 1000);
+      // setTimeout(processNextSegment, 1000);
     };
     /**
      * Sends the xhr request to download the video.
