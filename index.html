@@ -73,7 +73,7 @@ host this yourself.
     window.mediaSource.addEventListener('sourceopen', function(){
       window.sourceBuffer = window.mediaSource.addSourceBuffer(
           'video/mp4; codecs="avc1.42c01e"');
-      fileDownload('your_video.mp4');
+      fileDownload('http://192.168.1.12:8080/input.mp4');
     });
     /**
      * When video data is ready, append the video source buffer.
