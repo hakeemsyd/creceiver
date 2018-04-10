@@ -89,6 +89,7 @@ host this yourself.
       console.log("arraybuffer = " + arrayBuffer);
       window.allSegments = new Uint8Array(arrayBuffer);
       window.sourceBuffer.appendBuffer(window.allSegments);
+      window.video.play();
       //processNextSegment();
     }
     /**
