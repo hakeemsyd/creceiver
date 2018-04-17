@@ -70,7 +70,7 @@ host this yourself.
       console.log("onLoad");
       if (!arrayBuffer) {
         console.log("Array buffer is null");
-        window.video.src = null;
+        video.src = null;
         return;
       }
       console.log("arraybuffer = " + arrayBuffer);
@@ -117,7 +117,7 @@ host this yourself.
         onLoad(xhr.response);
       };
       xhr.onerror = function(e) {
-        window.video.src = null;
+        video.src = null;
       };
     };
   };
