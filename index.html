@@ -11,130 +11,74 @@ See the License for the specific language governing permissions and
 limitations under the License.
  -->
 <!--
-This how to loop a video without any delay between loops.
--->
+This sample demonstrates how to build your own Receiver for use with Google
+Cast.
+A receiver is typically an HTML5 application with a html, css, and JavaScript
+components.
+In this HTML5 page, we include our style sheet, the Receiver SDK, and our player
+JavaScript code.
+We Then define two layers within the player:
+1. The media layers
+2. The Overlay layers
+The overlay layer holds:
+   a. Logo for startup page
+   b. Media Artwork and information during loading
+   c. controls for Pause / Seek
+ -->
 <!DOCTYPE html>
 <html>
-  <head>
-<style type="text/css">
-  @import url(http://fonts.googleapis.com/css?family=Droid+Serif:400,700);
-  body {
-    font-family: "Droid Serif", serif;
-    color: #444;
-    line-height: 150%;
-    border: 0px;
-    margin: 0px;
-    width: 100%;
-    height: 100%;
-    overflow: hidden !important;
-  }
-  video {
-    width: 100%;
-    height: 100%;
-    margin: auto auto;
-    overflow: hidden !important;
-  }
-</style>
-<!--
-Include the Receiver Library - Very important use our URL, don't attempt to
-host this yourself.
--->
-<script type="text/javascript"
-    src="//www.gstatic.com/cast/sdk/libs/receiver/2.0.0/cast_receiver.js">
-</script>
-    <title>Looping Video Receiver</title>
-  </head>
-  <body>
-    <video id='vid' />
-<script type="text/javascript">
-  window.onload = function() {
-    // Turn on debugging so that you can see what is going on.  Please turn this off
-    // on your production receivers to improve performance.
-    cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
-    window.location.reload(true);
-
-    // Start the receiver SDK.
-    console.log('Application is ready, starting system');
-    window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
-    castReceiverManager.onSenderDisconnected = function (event) {
-      console.log("sender disconnected");
-      if(window.castReceiverManager.getSenders().length == 0 &&
-        event.reason == cast.receiver.system.DisconnectReason.REQUESTED_BY_SENDER) {
-          window.close();
-      }
-    };
-
-    window.castReceiverManager.start();
-    // Use MSE with the media element.
-    window.video = document.getElementById('vid');
-    window.mediaSource = new MediaSource();
-    window.video.src = window.URL.createObjectURL(window.mediaSource);
-    window.allSegments = null;
-    /**
-     * Loads the video and kicks off the processing.
-     */
-    window.mediaSource.addEventListener('sourceopen', function(){
-      window.sourceBuffer = window.mediaSource.addSourceBuffer(
-          'video/mp4; codecs="avc1.42c01e"');
-      //fileDownload('http://100.96.240.9:8080');
-    });
-    /**
-     * When video data is ready, append the video source buffer.
-     * @param {arrayBuffer} ArrayBuffer with video segments.
-     */
-    function onLoad(arrayBuffer) {
-      console.log("onLoad");
-      if (!arrayBuffer) {
-        console.log("Array buffer is null");
-        window.video.src = null;
-        return;
-      }
-      console.log("arraybuffer = " + arrayBuffer);
-      window.allSegments = new Uint8Array(arrayBuffer);
-      window.sourceBuffer.appendBuffer(window.allSegments);
-      processNextSegment();
-    }
-    /**
-     * Processes the next video segment for the video.
-     */
-    function processNextSegment() {
-      // Wait for the source buffer to be updated
-      if (!window.sourceBuffer.updating && window.sourceBuffer.buffered.length > 0) {
-          // Only push a new fragment if we are not updating and we have
-          // less than 10 seconds in the pipeline
-          if (window.sourceBuffer.buffered.end(window.sourceBuffer.buffered.length - 1) - window.video.currentTime < 10) {
-            // Append the video segments and adjust the timestamp offset forward
-            window.sourceBuffer.timestampOffset = window.sourceBuffer.buffered.end(this.sourceBuffer.buffered.length - 1);
-            window.sourceBuffer.appendBuffer(window.allSegments);
-          }
-          // Start playing the video
-          if (window.video.paused) {
-            window.video.play();
-          }
-      }
-      // setTimeout(processNextSegment, 1000);
-    };
-    /**
-     * Sends the xhr request to download the video.
-     * @param {string} url to load.
-     */
-    function fileDownload(url) {
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', url, true);
-      xhr.responseType = 'arraybuffer';
-      xhr.send();
-      xhr.onload = function(e) {
-        if (xhr.status != 200) {
-          onLoad();
-          return;
-        }
-        onLoad(xhr.response);
-      };
-      xhr.onerror = function(e) {
-        window.video.src = null;
-      };
-    };
-  };
-</script>
-  </body>
+<head>
+  <!-- Change the title tag to your app's name to display as the details text on the Cast device picker -->
+  <title>Casting app name</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="player.css" />
+  <script type="text/javascript" src="//www.gstatic.com/cast/sdk/libs/receiver/2.0.0/cast_receiver.js"></script>
+  <script type="text/javascript" src="//www.gstatic.com/cast/sdk/libs/mediaplayer/1.0.0/media_player.js"></script>
+  <script type="text/javascript" src="player.js"></script>
+</head>
+<body style="margin: 0">
+    <div id="player" class="player">
+        <div class="media">
+            <video></video>
+        </div>
+        <div class="logo"></div>
+        <div class="spinner"></div>
+        <div class="watermark"></div>
+        <div class="gradient"></div>
+        <div class="overlay">
+            <div class="media-info">
+                <div class="media-artwork"></div>
+                <div class="media-text">
+                    <div class="media-title"></div>
+                    <div class="media-subtitle"></div>
+                </div>
+            </div>
+            <div class="preview-mode-info">
+                <div class="preview-mode-artwork"></div>
+                <div class="preview-mode-text">
+	                <div class="preview-mode-timer">
+                        <div class="preview-mode-timer-starts">Up next in&nbsp;</div>
+                        <div class="preview-mode-timer-countdown"></div>
+                        <div class="preview-mode-timer-sec">&nbsp;secs...</div>
+                    </div>
+                    <div class="preview-mode-title"></div>
+                    <div class="preview-mode-subtitle"></div>
+                </div>
+            </div>
+            <div class="controls">
+                <span class="controls-play-pause"></span>
+                <span class="controls-cur-time"></span>
+                <span class="controls-total-time"></span>
+                <div class="controls-progress">
+                    <div class="controls-progress-inner progressBar"></div>
+                    <div class="controls-progress-thumb"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+      var playerDiv = document.getElementById('player');
+      new sampleplayer.CastPlayer(playerDiv).start();
+    </script>
+</body>
 </html>
