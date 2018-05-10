@@ -2022,7 +2022,7 @@ sampleplayer.getExtension_ = function(url) {
  */
 sampleplayer.getApplicationState_ = function(opt_media) {
   if (opt_media && opt_media.metadata && opt_media.metadata.title) {
-    return 'Now Casting: ' + opt_media.metadata.title;
+    return 'Now Casting: HLS STREAM FROM PACIFIC';
   } else if (opt_media) {
     return 'Now Casting';
   } else {
