@@ -589,7 +589,8 @@ sampleplayer.CastPlayer.prototype.preloadVideo_ = function(mediaInformation) {
   }
   var host = new cast.player.api.Host({
     'url': url,
-    'mediaElement': self.mediaElement_
+    'mediaElement': self.mediaElement_,
+    'preferSequenceNumberForPlaylistMatching': true
   });
   host.onError = function() {
     self.preloadPlayer_.unload();
