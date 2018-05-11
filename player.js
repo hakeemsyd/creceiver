@@ -414,7 +414,7 @@ sampleplayer.BURN_IN_TIMEOUT = 30 * 1000;
  *
  * @const @private {number}
  */
-sampleplayer.MEDIA_INFO_DURATION_ = 3 * 1000;
+sampleplayer.MEDIA_INFO_DURATION_ = 0;
 
 
 /**
@@ -422,7 +422,7 @@ sampleplayer.MEDIA_INFO_DURATION_ = 3 * 1000;
  *
  * @const @private {number}
  */
-sampleplayer.TRANSITION_DURATION_ = 1.5;
+sampleplayer.TRANSITION_DURATION_ = 0;
 
 
 /**
@@ -601,7 +601,7 @@ sampleplayer.CastPlayer.prototype.preloadVideo_ = function(mediaInformation) {
   };
   self.preloadPlayer_ = new cast.player.api.Player(host);
   self.preloadPlayer_.preload(protocolFunc(host));
-  return true;
+  return false;
 };
 
 /**
@@ -766,8 +766,8 @@ sampleplayer.CastPlayer.prototype.loadPreviewModeMetadata_ = function(media) {
 sampleplayer.CastPlayer.prototype.letPlayerHandleAutoPlay_ = function(info) {
   this.log_('letPlayerHandleAutoPlay_: ' + info.message.autoplay);
   var autoplay = info.message.autoplay;
-  info.message.autoplay = false;
-  this.mediaElement_.autoplay = false;
+  info.message.autoplay = true;
+  this.mediaElement_.autoplay = true;
   this.playerAutoPlay_ = autoplay == undefined ? true : autoplay;
 };
 
