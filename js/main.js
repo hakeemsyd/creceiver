@@ -10,9 +10,9 @@ var offerAnswerOptions = {
 var startTime;
 var remoteVideo = document.getElementById('remoteVideo');
 
-var socket = io.connect('http://localhost:8889');
+var socket = io.connect('http://192.168.1.4:8889');
 socket.on('connect', function(data) {
-  socket.emit('onwebpeerconnected', 'Web client');
+  socket.emit('onwebpeerconnected', 'Chromecast Client');
 });
 
 socket.on('offer', function(data) {
