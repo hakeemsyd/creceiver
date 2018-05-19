@@ -1,1 +1,1 @@
-<?php header( 'Location: /indexrtc.html' ) ;  ?>
+<?php header( 'Location: /index.html' ) ;  ?>
