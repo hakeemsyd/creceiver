@@ -25,6 +25,12 @@ Cast.
   <cast-media-player></cast-media-player>
   <script>
     cast.framework.CastReceiverContext.getInstance().start();
+    const playerManager =
+      cast.framework.CastReceiverContext.getInstance().getPlayerManager();
+    const playbackConfig = (Object.assign(
+            new cast.framework.PlaybackConfig(), playerManager.getPlaybackConfig()));
+    playbackConfig.autoResumeNumberOfSegments = 1;
+    playerManager.setPlaybackConfig(playbackConfig);
   </script>
 </body>
 </html>
