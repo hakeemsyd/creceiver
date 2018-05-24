@@ -1,1 +1,1 @@
-<?php header( 'Location: /player.html' ) ;  ?>
+<?php header( 'Location: /cafplayer.html' ) ;  ?>
